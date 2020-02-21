@@ -635,6 +635,7 @@ Renderer.prototype._buildTree = function(node) {
             if (this._options.lineNumber) {
                 this._beginGroup('algorithmic', 'with-linenum');
                 this._numLOC = 0;
+                this._skipNum = false;
             }
             else {
                 this._beginGroup('algorithmic');
