@@ -133,7 +133,7 @@
         % This quicksort algorithm is extracted from Chapter 7, Introduction 
         % to Algorithms (3rd edition)
         \begin{algorithm}
-        \caption{Quicksort}
+        \caption{Quicksort}   
         \begin{algorithmic}
         \PROCEDURE{Quicksort}{$A, p, r$}
             \IF{$p < r$} 
@@ -157,6 +157,45 @@
         \end{algorithmic}
         \end{algorithm}
     </pre>
+    <pre id="test-examples-skipnum" style="display:none">
+        \begin{algorithm}
+        \caption{Test skip num 1}   
+        \begin{algorithmic}
+        \SN \PROCEDURE{Test}{$n$}
+        \SN   \WHILE{$0 < n$}     
+                \STATE $n = n-1$
+        \SN   \ENDWHILE
+              \RETURN $n$
+        \SN \ENDPROCEDURE
+        \end{algorithmic}
+        \end{algorithm}
+    </pre>
+    <pre id="test-examples-skipnum2" style="display:none">
+        \begin{algorithm}
+        \caption{Test skip num 2}   
+        \begin{algorithmic}
+        \SN \PROCEDURE{Test}{$n$}
+        \SN   \WHILE{$0 < n$}     
+                \STATE $n = n-1$
+              \ENDWHILE
+              \RETURN $n$
+            \ENDPROCEDURE
+        \end{algorithmic}
+        \end{algorithm}
+    </pre>     
+    <pre id="test-examples-skipnum3" style="display:none">
+        \begin{algorithm}
+        \caption{Test ski pnum 3}   
+        \begin{algorithmic}
+        \SN \PROCEDURE{Test}{$n$}
+        \SN   \WHILE{$0 < n$}     
+                \STATE $n = n-1$
+        \SN   \ENDWHILE
+        \SN   \RETURN $n$
+            \ENDPROCEDURE
+        \end{algorithmic}
+        \end{algorithm}
+    </pre>       
     <script>
         pseudocode.renderElement(document.getElementById("test-basics"),
                                  {
@@ -173,6 +212,21 @@
                                      lineNumber: true,
                                      noEnd: false
                                  });
+        pseudocode.renderElement(document.getElementById("test-examples-skipnum"),
+                                 {
+                                     lineNumber: true,
+                                     noEnd: false
+                                 });
+        pseudocode.renderElement(document.getElementById("test-examples-skipnum2"),
+                                 {
+                                     lineNumber: true,
+                                     noEnd: true
+                                 });
+        pseudocode.renderElement(document.getElementById("test-examples-skipnum3"),
+                                 {
+                                     lineNumber: false,
+                                     noEnd: false
+                                 });                                   
     </script>
 </body>
 </html>

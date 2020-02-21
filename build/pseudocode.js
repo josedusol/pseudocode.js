@@ -305,10 +305,11 @@ module.exports = ParseError;
  *     <function>      :== \FUNCTION{<name>}{<params>} <block> \ENDFUNCTION
  *                         (same for <procedure>)
  *
- *     <statement>     :== <state> | <return> | <print>
+ *     <statement>     :== <state> | <return> | <print> | <skipnum>
  *     <state>         :== \STATE + <open-text>
  *     <return>        :== \RETURN + <open-text>
  *     <print>         :== \PRINT + <open-text>
+ *     <skipnum>       :== \SN
  *
  *     <comment>       :== \COMMENT{<close-text>}
  *
@@ -624,7 +625,7 @@ Parser.prototype._parseRepeat = function() {
 };
 
 var INPUTS_OUTPUTS_COMMANDS = ['ensure', 'require', 'input', 'output'];
-var STATEMENT_COMMANDS = ['state', 'print', 'return'];
+var STATEMENT_COMMANDS = ['state', 'print', 'return', 'sn'];
 Parser.prototype._parseCommand = function(acceptCommands) {
     if (!this._lexer.accept('func', acceptCommands)) return null;
 
@@ -1298,7 +1299,9 @@ Renderer.prototype._newLine = function() {
     var indentSize = this._options.indentSize;
     // if this line is for code (e.g. \STATE)
     if (this._blockLevel > 0) {
-        this._numLOC++;
+        if (!this._skipNum) {
+            this._numLOC++;
+        }
 
         this._html.beginP('ps-line ps-code', this._globalTextStyle.toCSS());
         if (this._options.lineNumber) {
@@ -1306,8 +1309,10 @@ Renderer.prototype._newLine = function() {
                 .beginSpan('ps-linenum', {
                     'left': -((this._blockLevel - 1) * (indentSize * 1.25)) + 'em',
                 })
-                .putText(this._numLOC + this._options.lineNumberPunc)
+                .putText(this._skipNum ? ""
+                    : this._numLOC + this._options.lineNumberPunc)
                 .endSpan();
+            this._skipNum = false;
         }
     }
     // if this line is for pre-conditions (e.g. \REQUIRE)
@@ -1564,20 +1569,25 @@ Renderer.prototype._buildTree = function(node) {
         case 'command':
             // commands: \STATE, \ENSURE, \PRINT, \RETURN, etc.
             var cmdName = node.value;
-            var displayName = {
-                'state': '',
-                'ensure': 'Ensure: ',
-                'require': 'Require: ',
-                'input': 'Input: ',
-                'output': 'Output: ',
-                'print': 'print ',
-                'return': 'return ',
-            }[cmdName];
+            if (cmdName === 'sn') {
+                this._skipNum = true;
+            }
+            else {
+                var displayName = {
+                    'state': '',
+                    'ensure': 'Ensure: ',
+                    'require': 'Require: ',
+                    'input': 'Input: ',
+                    'output': 'Output: ',
+                    'print': 'print ',
+                    'return': 'return ',
+                }[cmdName];
 
-            this._newLine();
-            if (displayName) this._typeKeyword(displayName);
-            textNode = node.children[0];
-            this._buildTree(textNode);
+                this._newLine();
+                if (displayName) this._typeKeyword(displayName);
+                textNode = node.children[0];
+                this._buildTree(textNode);
+            }
             break;
         case 'caption':
             this._newLine();

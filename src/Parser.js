@@ -35,10 +35,11 @@
  *     <function>      :== \FUNCTION{<name>}{<params>} <block> \ENDFUNCTION
  *                         (same for <procedure>)
  *
- *     <statement>     :== <state> | <return> | <print>
+ *     <statement>     :== <state> | <return> | <print> | <skipnum>
  *     <state>         :== \STATE + <open-text>
  *     <return>        :== \RETURN + <open-text>
  *     <print>         :== \PRINT + <open-text>
+ *     <skipnum>       :== \SN
  *
  *     <comment>       :== \COMMENT{<close-text>}
  *
@@ -354,7 +355,7 @@ Parser.prototype._parseRepeat = function() {
 };
 
 var INPUTS_OUTPUTS_COMMANDS = ['ensure', 'require', 'input', 'output'];
-var STATEMENT_COMMANDS = ['state', 'print', 'return'];
+var STATEMENT_COMMANDS = ['state', 'print', 'return', 'sn'];
 Parser.prototype._parseCommand = function(acceptCommands) {
     if (!this._lexer.accept('func', acceptCommands)) return null;
 
