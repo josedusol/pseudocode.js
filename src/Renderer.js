@@ -816,7 +816,7 @@ Renderer.prototype._buildTree = function(node) {
             break;
         case 'caption':
             this._newLine();
-            this._typeKeyword('Algorithm ' + Renderer.captionCount + ' ');
+            this._typeKeyword('Algoritmo ' + Renderer.captionCount + ' ');
             textNode = node.children[0];
             this._buildTree(textNode);
             break;
